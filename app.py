@@ -15,15 +15,19 @@ INDIA_DOC_SIZES = {
     "Stamp Size (2.0 x 2.5 cm)": {"width": 236, "height": 295, "ratio": (2.0, 2.5), "mode": "auto"}
 }
 
-# --- 2. Memory-Safe Background Removal (Prevents Cloud Crash) ---
+# --- 2. Memory-Safe Background Removal ---
 @st.cache_resource
 def get_rembg_session():
-    # 'u2netp' is a lightweight model optimized for low RAM servers
     return new_session("u2netp")
 
 def remove_background(img, bg_color):
+    # CRITICAL FIX: Image ko chota karein taaki RAM crash na ho
+    # Passport ke liye 600 pixels se zyada ki zaroorat nahi hoti
+    safe_img = img.copy()
+    safe_img.thumbnail((600, 600), Image.LANCZOS) 
+    
     img_byte_arr = io.BytesIO()
-    img.save(img_byte_arr, format='PNG')
+    safe_img.save(img_byte_arr, format='PNG')
     
     session = get_rembg_session()
     result_bytes = remove(img_byte_arr.getvalue(), session=session)
