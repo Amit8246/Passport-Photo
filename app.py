@@ -1,3 +1,10 @@
+import os
+# CRITICAL FIX: Restrict CPU threads to prevent server crash on Streamlit Cloud
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
+os.environ["NUMEXPR_NUM_THREADS"] = "1"
 import streamlit as st
 from PIL import Image, ImageDraw, ImageEnhance
 from streamlit_cropper import st_cropper
