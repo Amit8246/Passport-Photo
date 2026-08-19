@@ -2,3 +2,5 @@ streamlit
 Pillow
 streamlit-cropper
 rembg[cpu]
+opencv-python-headless
+numpy
